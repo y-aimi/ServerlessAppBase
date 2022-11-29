@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  spa-app:
+    container_name: app-base
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    volumes:
+      - .:/var/app:cached
+      - app-base-node-modules:/var/app/node_modules
+    working_dir: /var/app
+    ports:
+      - 10000:3000
+    tty: true
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USERPOLLING=true # Hot Reload を有効化
+      - APP_ENV=local # ビルドしたい環境に合わせ切り替えること(local:ローカル開発、stg:検証環境、pro:本番環境)
+    networks:
+      - app-base-net
+    command: npm run dev
+
+volumes:
+  # Volume Trick用の匿名ボリューム
+  # node_modulesをホストと切り離すために使用する
+  app-base-node-modules:
+
+networks:
+  app-base-net:
