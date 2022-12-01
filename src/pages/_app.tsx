@@ -1,6 +1,23 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppPropsWithLayout } from 'next/app';
+import dynamic from 'next/dynamic';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+import GlobalLayout from '@/components/layouts/Global';
+
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+  // ページで指定されたレイアウト読み込み
+  // ※指定がない場合は共通レイアウトを読み込む
+  const getLayout = Component.getLayout ?? ((page) => <GlobalLayout>{page}</GlobalLayout>);
+
+  // コンポーネントをSPA化して呼び出す
+  const SafeHydrate = dynamic(() => import('@/components/functional/SafeHydrate'), {
+    ssr: false,
+  });
+
+  return getLayout(
+    <SafeHydrate>
+      <Component {...pageProps} />
+    </SafeHydrate>
+  );
+};
+
+export default App;
