@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import { ReactNode } from 'react';
 
+import { GlobalContextProvider } from '@/contexts/GlobalContextProvider';
+
 // ----------------------------------------------------------------------------------
 // Reactコンポーネント
 // ----------------------------------------------------------------------------------
@@ -15,7 +17,9 @@ const Global = ({ children }: { children: ReactNode }) => {
         <link rel="icon" />
         <title>APP BASE</title>
       </Head>
-      <main>{children}</main>
+      <GlobalContextProvider>
+        <main>{children}</main>
+      </GlobalContextProvider>
     </>
   );
 };
