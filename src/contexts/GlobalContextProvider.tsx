@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 
 import { GlobalContext } from '@/contexts/GlobalContext';
 
@@ -9,10 +9,17 @@ export const GlobalContextProvider = ({ children }: { children: ReactNode }) => 
   const context = useContext(GlobalContext);
 
   // ----------------------------------------------------------------------------------
+  // 要素サイズ
+  // ----------------------------------------------------------------------------------
+
+  // ヘッダー高さ（単位：px）
+  const [headerHeight, setHeaderHeight] = useState<number>(context.headerHeight);
+
+  // ----------------------------------------------------------------------------------
   // Provider作成
   // ----------------------------------------------------------------------------------
 
-  const value = {};
+  const value = { headerHeight, setHeaderHeight };
 
   return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
 };
